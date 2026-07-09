@@ -1,0 +1,15 @@
+services:
+  hometube:
+    image: ghcr.io/egalitarianmonkey/hometube:latest
+    ports:
+      - "8501:8501"
+    environment:
+      - TZ=Europe/Madrid
+      - PORT=8501
+      - VIDEOS_FOLDER=/data/Videos
+      - TMP_DOWNLOAD_FOLDER=/data/tmp
+      - YOUTUBE_COOKIES_FILE_PATH=/config/youtube_cookies.txt
+    volumes:
+      - ./downloads:/data/Videos
+      - ./cookies:/config
+    restart: unless-stopped
