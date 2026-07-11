@@ -1,15 +1,19 @@
 services:
   hometube:
     image: ghcr.io/egalitarianmonkey/hometube:latest
+    container_name: hometube
     ports:
       - "8501:8501"
     environment:
       - TZ=Europe/Madrid
-      - PORT=8501
-      - VIDEOS_FOLDER=/data/Videos
-      - TMP_DOWNLOAD_FOLDER=/data/tmp
-      - YOUTUBE_COOKIES_FILE_PATH=/config/youtube_cookies.txt
+      - VIDEO_OUTPUT_FORMAT=mkv
+      - ENABLE_SPONSORBLOCK=true
     volumes:
-      - ./downloads:/data/Videos
-      - ./cookies:/config
+      - ./downloads:/app/downloads
+      - ./cookies:/app/cookies
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
